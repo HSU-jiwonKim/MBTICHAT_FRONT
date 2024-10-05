@@ -1,10 +1,11 @@
 .input-area {
-    min-height:51px;
-    display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+  min-height: 51px; /* 이 줄만 남김 */
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
   .plus-button{
     background-color: lightslategray;
     width: 50px;
@@ -16,19 +17,20 @@
     font-size: 24px;
   }
   
-  .input-container {
+.input-container {
     display: flex;
     justify-content: space-between;
     width: 100%;
-  }
+    flex-grow: 1; /* 이 속성을 추가하여 공간을 채우게 함 */
+}
   
-  .MuiInput-root{
+.MuiInput-root {
     height: 100%;
     width: 100%;
-    border:none;
+    border: none;
     border-color: white;
-  
-  }
+    flex-grow: 1; /* 이 속성을 추가하여 입력 필드가 공간을 채우게 함 */
+}
   
   
   input{
