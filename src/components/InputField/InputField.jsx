@@ -13,18 +13,20 @@ const InputField = ({ message, setMessage, sendMessage }) => {
                     value={message}
                     onChange={(event) => setMessage(event.target.value)}
                     multiline={false}
-                    rows={1}
+                    rows={1
+                } 
+                    className="input-field" // 클래스 추가
                 />
                 <Button // 보내기 버튼
                     disabled={message === ""}
-                    type="submit" // 버튼을 누를때 onClick이 아닌 onSubmit 이벤트가 실행됨.
+                    type="submit"
                     className="send-button"
                 >
                     전송
                 </Button>
             </form>
         </div>
-    )
+    );
 }
 
 export default InputField;
