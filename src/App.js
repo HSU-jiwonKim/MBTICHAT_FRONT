@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useState } from "react";
 import socket from "./server"; // 소켓 들고오기
 import "./App.css";
