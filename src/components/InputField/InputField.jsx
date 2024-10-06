@@ -8,6 +8,7 @@ const InputField = ({message,setMessage,sendMessage}) => {
     <div className="input-area">
           <div className="plus-button">+</div>
           <form onSubmit={sendMessage} className="input-container">
+            <div id = "textInput">
             <Input
               placeholder="Type in here…"
               value={message}
@@ -15,7 +16,7 @@ const InputField = ({message,setMessage,sendMessage}) => {
               multiline={false}
               rows={1}
             />
-
+          </div>
             <Button
               disabled={message === ""}
               type="submit"

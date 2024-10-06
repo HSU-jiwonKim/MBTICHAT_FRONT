@@ -1,5 +1,6 @@
 .input-area {
-  min-height: 51px;
+  background-color: red;
+  min-height: 10px;
   display: flex;
   position: absolute;
   bottom: 0;
@@ -29,6 +30,7 @@
   width: 100%;
   padding-left: 10px; /* 입력 필드 왼쪽 여백 */
   box-sizing: border-box;
+  height : 100%;
 }
 
 input {
@@ -53,4 +55,9 @@ input:focus {
   border-radius: 0;
   background-color: #F7E600;
   border: none;
+}
+
+#textInput {
+  width : 100%;
+  height : 100%;
 }
