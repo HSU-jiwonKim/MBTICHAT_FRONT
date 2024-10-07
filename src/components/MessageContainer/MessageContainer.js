@@ -2,9 +2,10 @@ import React from "react";
 import "./MessageContainer.css";
 import { Container } from "@mui/system";
 
-const MessageContainer = ({ messageList = [], user }) => {
+const MessageContainer = ({ messageList = [], user, userCount }) => {
     return (
         <div className="message-container-wrapper"> {/* 전체 컨테이너 */}
+            <h5 className="user-count">그룹채팅 <span className="user-count-number">{userCount}</span></h5> {/* 사용자 수 표시 */}
             <div className="message-scroll-container"> {/* 스크롤 컨테이너 */}
                 {messageList.map((message) => {
                     const userName = message?.user?.name || "Unknown";

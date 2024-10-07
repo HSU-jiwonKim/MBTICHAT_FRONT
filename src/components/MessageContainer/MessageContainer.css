@@ -1,3 +1,15 @@
+.user-count {
+  text-align: left; /* 중앙 정렬 */
+  margin: 10px 0; /* 위아래 여백 */
+  font-size: 1.2rem; /* 폰트 크기 */
+  color: #333; /* 검정색 글자 */
+}
+
+.user-count-number {
+  color: #888; /* 밝은 회색 글자 */
+}
+
+
 .system-message-container {
   display: flex;
 
@@ -72,7 +84,7 @@
   background-color: rgb(178, 199, 217); /* 전체 배경색 설정 */
   padding: 20px; /* 여백을 늘려 배경색 보이는 영역 증가 */
   width: 91%; /* 너비를 100%로 설정 (필요에 따라 조정 가능) */
-  height: 649px; /* 높이를 원하는 값으로 설정 */
+  height: 800px; /* 높이를 원하는 값으로 설정 */
   max-height: 100vh; /* 최대 높이를 화면 높이로 제한 */
   overflow: hidden; /* 넘치는 내용 숨김 */
 }

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import socket from "./server"; // 소켓 들고오기
 import "./App.css";
 import InputField from "./components/InputField/InputField";
@@ -9,8 +8,9 @@ function App() {
     const [user, setUser] = useState(null);
     const [message, setMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
+    const [userCount, setUserCount] = useState(0); // 사용자 수 상태 추가
 
-    console.log("Message List", messageList); // 메세지 리스트 로그
+    console.log("Message List", messageList); // 메시지 리스트 로그
 
     const askUserName = () => {
         let userName = prompt("당신의 이름을 입력하세요");
@@ -35,7 +35,13 @@ function App() {
     useEffect(() => {
         // 메시지를 수신하면 messageList를 업데이트
         socket.on("message", (message) => {
-            setMessageList((prevState) => [...prevState, message]); // 배열을 concat하는 대신 전개 연산자 사용
+            setMessageList((prevState) => [...prevState, message]);
+        });
+
+        // 사용자 수 업데이트
+        socket.on("userCount", (count) => {
+            setUserCount(count); // 사용자 수 업데이트
+            console.log("Updated user count:", count);
         });
 
         askUserName();
@@ -52,6 +58,7 @@ function App() {
             socket.off("connect");
             socket.off("disconnect");
             socket.off("message");
+            socket.off("userCount"); // 수정된 부분
         };
     }, []);
 
@@ -66,7 +73,7 @@ function App() {
 
     return (
         <div className="App">
-            <MessageContainer messageList={messageList} user={user} />
+            <MessageContainer messageList={messageList} user={user} userCount={userCount} /> {/* 사용자 수 전달 */}
             <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
         </div>
     );
