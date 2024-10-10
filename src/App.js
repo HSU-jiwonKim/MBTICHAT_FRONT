@@ -36,6 +36,7 @@ function App() {
         return () => {
             socket.off("message");
             socket.off("userCount");
+            socket.off("userCount");
         };
     }, []);
 
@@ -47,6 +48,9 @@ function App() {
 
     return (
         <div className="App">
+            {isModalOpen && (
+                <Modal onClose={() => setIsModalOpen(false)} onSubmit={handleUserNameSubmit} />
+            )}
             <MessageContainer messageList={messageList} user={user} userCount={userCount} />
             <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
             <button onClick={() => setIsModalOpen(true)}>이름 변경</button> {/* 모달 열기 버튼 */}
