@@ -12,8 +12,15 @@ function App() {
     const [userCount, setUserCount] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(true); // 모달 상태 추가
 
-    const handleUserNameSubmit = (userName) => {
-        socket.emit("login", userName, (res) => {
+    const handleUserNameSubmit = (userName, profileImage) => {
+        const defaultProfileImage = 'URL_TO_DEFAULT_PROFILE_IMAGE'; // 기본 프로필 이미지 URL을 설정하세요.
+
+        const formData = {
+            userName,
+            profileImage: profileImage || defaultProfileImage, // 이미지가 없으면 기본 이미지로 설정
+        };
+
+        socket.emit("login", formData, (res) => {
             console.log("Response from server:", res);
             if (res?.ok) {
                 setUser(res.data);
