@@ -71,10 +71,26 @@ function App() {
         setMessage(''); // 메시지 전송 후 입력 필드 비우기
     };
 
+    const handleUserLeave = () => {
+        if (user) {
+            socket.emit("userLeave", user.name, (res) => {
+                console.log("User left response", res);
+                if (res?.ok) {
+                    // 시스템 메시지를 messageList에 추가
+                    setMessageList((prevState) => [
+                        ...prevState,
+                        { _id: Date.now(), user: { name: "system" }, chat: `${user.name} 님이 나갔습니다.`, createdAt: new Date() }
+                    ]);
+                }
+            });
+        }
+    };
+
     return (
         <div className="App">
-            <MessageContainer messageList={messageList} user={user} userCount={userCount} /> {/* 사용자 수 전달 */}
+            <MessageContainer messageList={messageList} user={user} userCount={userCount} />
             <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
+            <button onClick={handleUserLeave}>나가기</button> {/* 나가기 버튼 추가 */}
         </div>
     );
 }
