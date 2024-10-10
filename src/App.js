@@ -3,29 +3,20 @@ import socket from "./server"; // 소켓 들고오기
 import "./App.css";
 import InputField from "./components/InputField/InputField";
 import MessageContainer from "./components/MessageContainer/MessageContainer";
+import Modal from "./Modal"; // 모달 컴포넌트 추가
 
 function App() {
     const [user, setUser] = useState(null);
     const [message, setMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
-    const [userCount, setUserCount] = useState(0); // 사용자 수 상태 추가
+    const [userCount, setUserCount] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(true); // 모달 상태 추가
 
-    console.log("Message List", messageList); // 메시지 리스트 로그
-
-    const askUserName = () => {
-        let userName = prompt("당신의 이름을 입력하세요");
-       
-        while (!userName) {
-            userName = prompt("이름을 입력해야 합니다. 다시 입력하세요.");
-        }
-    
-        console.log("User Name Entered:", userName);
-
+    const handleUserNameSubmit = (userName) => {
         socket.emit("login", userName, (res) => {
             console.log("Response from server:", res);
             if (res?.ok) {
                 setUser(res.data);
-                console.log("User set:", res.data);
             } else {
                 console.error("Login error:", res.error);
             }
@@ -33,18 +24,13 @@ function App() {
     };
 
     useEffect(() => {
-        // 메시지를 수신하면 messageList를 업데이트
         socket.on("message", (message) => {
             setMessageList((prevState) => [...prevState, message]);
         });
 
-        // 사용자 수 업데이트
         socket.on("userCount", (count) => {
-            setUserCount(count); // 사용자 수 업데이트
-            console.log("Updated user count:", count);
+            setUserCount(count);
         });
-
-        askUserName();
 
         socket.on("connect", () => {
             console.log("Socket connected:", socket.id);
@@ -58,25 +44,22 @@ function App() {
             socket.off("connect");
             socket.off("disconnect");
             socket.off("message");
-            socket.off("userCount"); // 수정된 부분
+            socket.off("userCount");
         };
     }, []);
 
     const sendMessage = (event) => {
         event.preventDefault();
-        console.log("Sending message:", message);
         socket.emit("sendMessage", message, (res) => {
             console.log("sendMessage response", res);
         });
-        setMessage(''); // 메시지 전송 후 입력 필드 비우기
+        setMessage('');
     };
 
     const handleUserLeave = () => {
         if (user) {
             socket.emit("userLeave", user.name, (res) => {
-                console.log("User left response", res);
                 if (res?.ok) {
-                    // 시스템 메시지를 messageList에 추가
                     setMessageList((prevState) => [
                         ...prevState,
                         { _id: Date.now(), user: { name: "system" }, chat: `${user.name} 님이 나갔습니다.`, createdAt: new Date() }
@@ -88,9 +71,12 @@ function App() {
 
     return (
         <div className="App">
+            {isModalOpen && (
+                <Modal onClose={() => setIsModalOpen(false)} onSubmit={handleUserNameSubmit} />
+            )}
             <MessageContainer messageList={messageList} user={user} userCount={userCount} />
             <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
-            <button onClick={handleUserLeave}>나가기</button> {/* 나가기 버튼 추가 */}
+            <button onClick={handleUserLeave}>나가기</button>
         </div>
     );
 }
