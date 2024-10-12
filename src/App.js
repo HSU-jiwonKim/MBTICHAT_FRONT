@@ -56,19 +56,6 @@ function App() {
         setMessage('');
     };
 
-    const handleUserLeave = () => {
-        if (user) {
-            socket.emit("userLeave", user.name, (res) => {
-                if (res?.ok) {
-                    setMessageList((prevState) => [
-                        ...prevState,
-                        { _id: Date.now(), user: { name: "system" }, chat: `${user.name} 님이 나갔습니다.`, createdAt: new Date() }
-                    ]);
-                }
-            });
-        }
-    };
-
     return (
         <div className="App">
             {isModalOpen && (
@@ -76,7 +63,6 @@ function App() {
             )}
             <MessageContainer messageList={messageList} user={user} userCount={userCount} />
             <InputField message={message} setMessage={setMessage} sendMessage={sendMessage} />
-            <button onClick={handleUserLeave}>나가기</button>
         </div>
     );
 }
