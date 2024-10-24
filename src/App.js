@@ -50,10 +50,34 @@ function App() {
 
     const sendMessage = (event) => {
         event.preventDefault();
+        
+        // 사용자 메시지를 서버에 전송
         socket.emit("sendMessage", message, (res) => {
             console.log("sendMessage response", res);
         });
-        setMessage('');
+        
+        // GPT API 요청
+        fetch("https://mbtichat-backend.onrender.com/api/chat", { // 백엔드 API 엔드포인트로 수정
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // GPT의 응답을 메시지 목록에 추가
+            const gptMessage = {
+                chat: data.reply,
+                user: { id: null, name: "GPT" }, // 메시지 출처를 구분하기 위해
+            };
+            setMessageList((prevState) => [...prevState, gptMessage]);
+        })
+        .catch(error => {
+            console.error("Error fetching GPT response:", error);
+        });
+
+        setMessage(''); // 메시지 입력창 초기화
     };
 
     return (
