@@ -50,9 +50,17 @@ function App() {
 
     const sendMessage = (event) => {
         event.preventDefault();
-        socket.emit("sendMessage", message, (res) => {
-            console.log("sendMessage response", res);
-        });
+        // 사용자가 입력한 메시지가 !GPT로 시작하는지 확인
+        if (message.startsWith('!GPT')) {
+            socket.emit("sendMessage", message, (res) => {
+                console.log("sendMessage response", res);
+            });
+        } else {
+            // 일반 메시지 처리
+            socket.emit("sendMessage", message, (res) => {
+                console.log("sendMessage response", res);
+            });
+        }
         setMessage('');
     };
 
